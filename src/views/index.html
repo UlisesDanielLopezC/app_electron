@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Electron App</title>
+  <link rel="stylesheet" href="./bootstrap.min.css">
+  <link rel="stylesheet" href="custom.css">
+</head>
+
+<body>
+
+  <div class="container-fluid p-4">
+    <div class="row" id="products">
+    </div>
+  </div>
+
+  <script>
+    const { ipcRenderer } = require('electron');
+    const products = document.querySelector('#products');
+
+    ipcRenderer.on('product:new', (e, newProduct) => {
+      const newProductTemplate = `
+        <div class="col-xs-4 p-1">
+        <div class="card text-center">
+            <div class="card-header bg-dark">
+              <h2 class="card-title text-warning">${newProduct.nombre}</h2>
+            </div>
+            <div class="card-body fw-bolder text-dark bg-info">
+              Descripcion: ${newProduct.descripcion}
+              <hr>
+              $${newProduct.precio}
+            </div>
+            <div class="card-footer bg-danger">
+              <button class="btn btn-sm">
+                Borrar
+              </button>
+            </div>
+        </div>
+        </div>
+      `;
+      products.innerHTML += newProductTemplate;
+      const btns = document.querySelectorAll('.btn');
+      btns.forEach(btn => {
+        btn.addEventListener('click', e => {
+          e.target.parentElement.parentElement.parentElement.remove();
+        });
+      })
+    });
+
+    ipcRenderer.on('products:remove-all', e => {
+      products.innerHTML = '';
+    });
+
+    function removeProduct(e) {
+    }
+  </script>
+</body>
+
+</html>
