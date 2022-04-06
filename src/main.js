@@ -6,13 +6,6 @@ const path = require('path');
 let mainWindow;
 let newProductWindow;
 
-if (process.env.NODE_ENV !== 'production') {
-  require('electron-reload')(__dirname, {
-    electron: path.join(__dirname, '../node_modules', '.bin', 'electron')
-  });
-}
-
-
 app.on('ready', () => {
 
   mainWindow = new BrowserWindow({
